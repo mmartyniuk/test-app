@@ -56,10 +56,15 @@ class App {
         router.get('/airports', (req, res, next) => {
             let self = this;
             let promise = new Promise(function(resolve, reject) {
-                self.getAirlines(resolve);
+                self.getAirports(req.query, resolve);
             });
             return promise.then(function(result) {
-                return res.json(result);
+                return res.json(result.map((airport) => {
+                    return {
+                        value: airport.airportName,
+                        data: airport.airportCode
+                    }
+                }));
             });
         });
         router.get('/search', (req, res, next) => {

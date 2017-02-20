@@ -14,6 +14,7 @@
                     <input type="text" 
                         class="form-control" 
                         id="fromLocation" 
+                        maxlength="30"
                         placeholder="eg: New-York">
                 </div>
                 <div class="form-group">
@@ -24,14 +25,21 @@
                         id="toLocation" 
                         placeholder="eg: Sydney">
                 </div>
-                <div class="form-group date">
+                <div class="input-group date">
                     <label for="toLocation">Travel date:</label>
-                    <input type='text' readonly class="form-control" data-date-autoclose="true"/>
+                    <input 
+                        type='text' 
+                        readonly 
+                        class="form-control"/>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                     </span>
                 </div>
-                <input type="button" class="btn btn-default" value="Submit">
+                <input 
+                    type="button" 
+                    class="btn btn-default"
+                    id="search"
+                    value="Search">
             </form>             
         </div>
         <!-- inject:js -->
