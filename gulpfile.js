@@ -7,9 +7,6 @@ const inject = require("gulp-inject");
 const sass = require('gulp-sass');
 
 const jsForInject = [
-    /*"./node_modules/jquery/dist/jquery.min.js",
-    "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-    "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js",*/
     './build/*.js'
 ];
 
@@ -23,27 +20,30 @@ const fonts = [
     "./node_modules/bootstrap/fonts/*.{ttf,woff,woff2}"
 ];
 
-gulp.task('bundle', function() {
+gulp.task('bundle', () => {
     const bundler = browserify("./src/client/app.js", { debug: true }).transform(babel);
         return bundler.bundle()
-            .on("error", function(err) { console.error(err); this.emit("end"); })
+            .on("error", (err) => { 
+                console.error(err); 
+                this.emit("end"); 
+            })
             .pipe(source("build.js"))
             .pipe(buffer())
             .pipe(gulp.dest("./build"));
 });
 
-gulp.task("sass", function () {
+gulp.task("sass", () => {
     return gulp.src("./src/client/styles/*.scss")
         .pipe(sass().on("error", sass.logError))
         .pipe(gulp.dest("./build"));
 });
 
-gulp.task("fonts", function () {
+gulp.task("fonts", () => {
     return gulp.src(fonts)
         .pipe(gulp.dest("./build/fonts"));
 });
 
-gulp.task("default", ["bundle", "fonts", "sass"], function() {
+gulp.task("default", ["bundle", "fonts", "sass"], () => {
     return gulp.src("./index.html")
         .pipe(inject(gulp.src(cssForInject,
             {read: false}), {addRootSlash: true})

@@ -1,4 +1,5 @@
 import * as $ from "jquery";
+import moment from "moment";
 
 export default {
     getAirports: (query) => {
@@ -13,7 +14,7 @@ export default {
         return $.ajax({
             url: "/search",
             data: {
-                date: date,
+                date: moment(date).format("YYYY-MM-DD"),
                 from: from,
                 to: to
             }

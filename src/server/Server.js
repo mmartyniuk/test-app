@@ -3,7 +3,7 @@ import * as path from 'path';
 import request from 'request';
 import Promise from 'promise';
 
-class App {
+class Server {
     constructor() {
         this.express = express();
         this.config();
@@ -61,7 +61,7 @@ class App {
             return promise.then(function(result) {
                 return res.json(result.map((airport) => {
                     return {
-                        value: airport.airportName,
+                        value: airport.cityName + ", " + airport.airportName,
                         data: airport.airportCode
                     }
                 }));
@@ -77,7 +77,7 @@ class App {
                 let airlinesList = result;
                 let promises = airlinesList.map((list) => {
                     return new Promise(function(resolve, reject) {
-                        self.search(req.query, list.code, resolve)
+                        self.search(req.query, list.code, resolve);
                     });
                 });
                 return Promise.all(promises).then((promiseResults) => {
@@ -93,4 +93,4 @@ class App {
 
 }
 
-export default new App().express;
+export default new Server().express;

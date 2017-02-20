@@ -1,14 +1,14 @@
 import * as http from 'http';
 
-import App from './src/server/App';
+import Server from './src/server/Server';
 
-const port = 3002;
+const port = 3000;
 
-const server = http.createServer(App);
+const app = http.createServer(Server);
 
-server.listen(port);
+app.listen(port);
 
-server.on('error', onError);
+app.on('error', onError);
 
 function onError(error) {
     console.log(error);
