@@ -67,7 +67,7 @@ export default {
         $(elementName).datepicker({
             autoclose: true,
             todayHighlight: true,
-            format: 'dd/mm/yyyy',
+            format: "dd/mm/yyyy",
             startDate: self[propertyName]
         }).on("changeDate", () => {
             self[propertyName] = $(elementName).datepicker("getDate");
@@ -78,8 +78,8 @@ export default {
     // takes content from backend API and element, in which content
     // should be appended
     renderResultTable(content, element) {
-        // th's and empty table elems
-        let tableHeadings = ['Flight number', 'From', 'To', 'Departure', 'Arrival', 'Airline', 'Plane', 'Price'];
+        // th"s and empty table elems
+        let tableHeadings = ["Flight number", "From", "To", "Departure", "Arrival", "Airline", "Plane", "Price"];
         let table = $("<table></table>").addClass("table table-striped");
         let tableHead = $("<thead></thead>");
         let tableBody= $("<tbody></tbody>");
@@ -96,25 +96,25 @@ export default {
             let row = $("<tr></tr>");
             let startTime = sortedContent[i].start.dateTime;
             // required for ignoring local time
-            let startTimeMoment = moment(startTime, 'YYYY/MM/DD HH:mm');
+            let startTimeMoment = moment(startTime, "YYYY/MM/DD HH:mm");
             let startTimeUTC = [
-                startTimeMoment.format('YYYY'),
-                startTimeMoment.format('M')-1,
-                startTimeMoment.format('D'),
-                startTimeMoment.format('HH'),
-                startTimeMoment.format('mm')
+                startTimeMoment.format("YYYY"),
+                startTimeMoment.format("M")-1,
+                startTimeMoment.format("D"),
+                startTimeMoment.format("HH"),
+                startTimeMoment.format("mm")
             ];
             row.append($("<td></td>").text(sortedContent[i].flightNum));
             row.append($("<td></td>").text(sortedContent[i].start.airportName));
             row.append($("<td></td>").text(sortedContent[i].finish.airportName));
-            row.append($("<td></td>").text(moment.utc(startTimeUTC).format('llll')));
-            // usually user is looking for tickets from 'start' location
-            // so it's enough just to take duration of flight and add it to start time
+            row.append($("<td></td>").text(moment.utc(startTimeUTC).format("llll")));
+            // usually user is looking for tickets from "start" location
+            // so it"s enough just to take duration of flight and add it to start time
             // to show arrival datetime
-            row.append($("<td></td>").text(moment.utc(startTimeUTC).add('m', content[i].durationMin).format('llll')));
+            row.append($("<td></td>").text(moment.utc(startTimeUTC).add(content[i].durationMin, "m").format("llll")));
             row.append($("<td></td>").text(sortedContent[i].airline.name));
             row.append($("<td></td>").text(sortedContent[i].plane.shortName));
-            row.append($("<td></td>").text(sortedContent[i].price + '$'));
+            row.append($("<td></td>").text(sortedContent[i].price + "$"));
             tableBody.append(row);
         }
         table.append(tableBody);
@@ -126,14 +126,14 @@ export default {
         // date variables
         let today = moment(),
             // this is needed to check if tab date is in the past
-            yesterdayStart = today.clone().subtract(1, 'days').startOf('day'),
-            beforeYesterdayStart = today.clone().subtract(2, 'days').startOf('day'),
+            yesterdayStart = today.clone().subtract(1, "days").startOf("day"),
+            beforeYesterdayStart = today.clone().subtract(2, "days").startOf("day"),
             selectedDate = moment(date.getTime()),
             // tabs
-            tomorrow = moment(selectedDate).add(1, 'day'),
-            afterTomorrow = moment(selectedDate).add(2, 'days'),
-            yesterday = moment(selectedDate).subtract(1, 'day'),
-            beforeYesterday = moment(selectedDate).subtract(2, 'days'),
+            tomorrow = moment(selectedDate).add(1, "day"),
+            afterTomorrow = moment(selectedDate).add(2, "days"),
+            yesterday = moment(selectedDate).subtract(1, "day"),
+            beforeYesterday = moment(selectedDate).subtract(2, "days"),
             tabs = [beforeYesterday, yesterday, selectedDate, tomorrow, afterTomorrow];
 
         let fieldset = $("<fieldset></fieldset>").addClass("search-form-elements");
@@ -143,10 +143,10 @@ export default {
             let tabsWrapper = $("<div></div>").addClass("btn-group");
             let tab = $("<button></button>")
                 .addClass("btn btn-default")
-                .text(moment(tabs[i]).format('MMMM Do'));
+                .text(moment(tabs[i]).format("MMMM Do"));
             // if selected date is today, there is no need to enable previous tabs
             // to prevent api calls with error response
-            if(tabs[i].isSame(yesterdayStart, 'd') || tabs[i].isSame(beforeYesterdayStart, 'd')) {
+            if(tabs[i].isSame(yesterdayStart, "d") || tabs[i].isSame(beforeYesterdayStart, "d")) {
                 tab.prop("disabled", true);
             }
             if(tabs[i] === selectedDate) {

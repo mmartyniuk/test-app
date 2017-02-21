@@ -1,7 +1,7 @@
-import express from 'express';
-import * as path from 'path';
-import request from 'request';
-import Promise from 'promise';
+import express from "express";
+import * as path from "path";
+import request from "request";
+import Promise from "promise";
 
 class Server {
     constructor() {
@@ -12,13 +12,13 @@ class Server {
     
     // static folders
     config() {
-        this.express.use('/build', express.static(path.join(__dirname, './../../build/')));
-        this.express.use('/node_modules', express.static(path.join(__dirname, './../../node_modules/')));
+        this.express.use("/build", express.static(path.join(__dirname, "./../../build/")));
+        this.express.use("/node_modules", express.static(path.join(__dirname, "./../../node_modules/")));
     }
     
     // calls to 3rd party backend API
     getAirports(query, resolve) {
-        request({url: 'http://node.locomote.com/code-task/airports', qs: query}, function (error, response, body) {
+        request({url: "http://node.locomote.com/code-task/airports", qs: query}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 resolve(JSON.parse(body));
             }
@@ -26,7 +26,7 @@ class Server {
     }
     
     getAirlines(resolve) {
-        request('http://node.locomote.com/code-task/airlines', function (error, response, body) {
+        request("http://node.locomote.com/code-task/airlines", function (error, response, body) {
             if (!error && response.statusCode == 200) {
                resolve(JSON.parse(body));
             }
@@ -34,7 +34,7 @@ class Server {
     }
     
     search(query, code, resolve) {
-        return request({url: 'http://node.locomote.com/code-task/flight_search/' + code, qs: query}, function (error, response, body) {
+        return request({url: "http://node.locomote.com/code-task/flight_search/" + code, qs: query}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 resolve(JSON.parse(body));
             }
@@ -43,10 +43,10 @@ class Server {
 
     routes() {
         let router = express.Router();
-        router.get('/', (req, res, next) => {
-            res.sendFile(path.join(__dirname + './../../build/index.html'));
+        router.get("/", (req, res, next) => {
+            res.sendFile(path.join(__dirname + "./../../build/index.html"));
         });
-        router.get('/airlines', (req, res, next) => {
+        router.get("/airlines", (req, res, next) => {
             let self = this;
             let promise = new Promise(function(resolve, reject) {
                 self.getAirlines(resolve);
@@ -55,7 +55,7 @@ class Server {
                 return res.json(result);
             });
         });
-        router.get('/airports', (req, res, next) => {
+        router.get("/airports", (req, res, next) => {
             let self = this;
             let promise = new Promise(function(resolve, reject) {
                 self.getAirports(req.query, resolve);
@@ -69,7 +69,7 @@ class Server {
                 }));
             });
         });
-        router.get('/search', (req, res, next) => {
+        router.get("/search", (req, res, next) => {
             let self = this;
             // getting airlines 
             let promise = new Promise(function(resolve, reject) {
@@ -84,7 +84,7 @@ class Server {
                         self.search(req.query, list.code, resolve);
                     });
                 });
-                // when all 'airline' results are here, concatting an array with results
+                // when all "airline" results are here, concatting an array with results
                 return Promise.all(promises).then((promiseResults) => {
                     promiseResults.forEach((searchResult) => {
                         results = results.concat(searchResult);
@@ -93,7 +93,7 @@ class Server {
                 });
             });
         });
-        this.express.use('/', router);
+        this.express.use("/", router);
     }
 
 }

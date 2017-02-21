@@ -1,14 +1,14 @@
-const gulp = require('gulp');
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
-const browserify = require('browserify');
-const babel = require('babelify');
+const gulp = require("gulp");
+const source = require("vinyl-source-stream");
+const buffer = require("vinyl-buffer");
+const browserify = require("browserify");
+const babel = require("babelify");
 const inject = require("gulp-inject");
-const sass = require('gulp-sass');
+const sass = require("gulp-sass");
 
 // files to be injected
 const jsForInject = [
-    './build/*.js'
+    "./build/*.js"
 ];
 
 const cssForInject = [
@@ -22,7 +22,7 @@ const fonts = [
 ];
 
 // bundling client ui
-gulp.task('bundle', () => {
+gulp.task("bundle", () => {
     const bundler = browserify("./src/client/app.js", { debug: true }).transform(babel);
         return bundler.bundle()
             .on("error", (err) => { 

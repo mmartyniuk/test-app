@@ -27,7 +27,8 @@ export default class App {
             helpers.initDatepicker(this.datePickerElement, this, "date");
             
             // event handlers
-            $(this.searchElement).on("click", () => {
+            $(this.searchElement).on("click", (e) => {
+                e.preventDefault();
                 this.search();
             });
 
@@ -43,12 +44,13 @@ export default class App {
 
     search() {
         $(this.fieldsetElement).prop("disabled", true);
+        console.log(11);
         service.search(this.from, this.to, this.date)
             .done((result) => {
                 $(this.contentElement).empty();
                 $(this.tabsContentElement).empty();
+                console.log(22);
                 $(this.fieldsetElement).prop("disabled", false);
-                
                 //render tabs and content from search result
                 helpers.renderTabNavigators(this.tabsContentElement, this.date, this.tab.bind(this));
                 helpers.renderResultTable(result, this.contentElement);
@@ -69,7 +71,7 @@ export default class App {
     preventIncorrectSearch(prop) {
         // preventing search with changed value from autocomplete
         this[prop] = null;
-        if(!$(this.searchElement).is(':disabled')) {
+        if(!$(this.searchElement).is(":disabled")) {
             $(this.searchElement).prop("disabled", true);
         }
     }
