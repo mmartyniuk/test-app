@@ -42,7 +42,7 @@ class Server {
     }
 
     routes() {
-        let router = express.Router();
+        const router = express.Router();
         router.get("/", (req, res, next) => {
             res.sendFile(path.join(__dirname + "./../../build/index.html"));
         });
