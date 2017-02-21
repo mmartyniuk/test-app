@@ -1,5 +1,6 @@
 import jQuery from "jquery";
 import $ from "jquery";
+import NProgress from "nprogress";
 
 import service from "./services/app.service";
 import helpers from "./helpers/app.helpers";
@@ -44,11 +45,17 @@ export default class App {
 
     search() {
         $(this.fieldsetElement).prop("disabled", true);
+        NProgress.start({speed: 700});
+        let interval = setInterval(() => { 
+            NProgress.inc(); 
+        }, 700);   
         service.search(this.from, this.to, this.date)
             .done((result) => {
                 $(this.contentElement).empty();
                 $(this.tabsContentElement).empty();
                 $(this.fieldsetElement).prop("disabled", false);
+                clearInterval(interval);
+                NProgress.done();
                 //render tabs and content from search result
                 helpers.renderTabNavigators(this.tabsContentElement, this.date, this.tab.bind(this));
                 helpers.renderResultTable(result, this.contentElement);
@@ -57,10 +64,16 @@ export default class App {
     
     tab(date) {
         $(this.fieldsetElement).prop("disabled", true);
+        NProgress.start({speed: 700});
+        let interval = setInterval(() => { 
+            NProgress.inc(); 
+        }, 700);  
         service.search(this.from, this.to, date)
             .done((result) => {
                 $(this.contentElement).empty();
                 $(this.fieldsetElement).prop("disabled", false);
+                clearInterval(interval);
+                NProgress.done();
                 //render content from search result
                 helpers.renderResultTable(result, this.contentElement);
             });

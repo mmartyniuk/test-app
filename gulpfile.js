@@ -14,6 +14,7 @@ const jsForInject = [
 const cssForInject = [
     "./node_modules/bootstrap/dist/css/bootstrap.min.css",
     "./node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css",
+    "./node_modules/nprogress/nprogress.css",
     "./build/*.css"
 ];
 
