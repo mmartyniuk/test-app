@@ -44,12 +44,10 @@ export default class App {
 
     search() {
         $(this.fieldsetElement).prop("disabled", true);
-        console.log(11);
         service.search(this.from, this.to, this.date)
             .done((result) => {
                 $(this.contentElement).empty();
                 $(this.tabsContentElement).empty();
-                console.log(22);
                 $(this.fieldsetElement).prop("disabled", false);
                 //render tabs and content from search result
                 helpers.renderTabNavigators(this.tabsContentElement, this.date, this.tab.bind(this));
