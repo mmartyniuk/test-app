@@ -6,13 +6,14 @@ const babel = require('babelify');
 const inject = require("gulp-inject");
 const sass = require('gulp-sass');
 
+// files to be injected
 const jsForInject = [
     './build/*.js'
 ];
 
 const cssForInject = [
     "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-    "./node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css",
+    "./node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css",
     "./build/*.css"
 ];
 
@@ -20,6 +21,7 @@ const fonts = [
     "./node_modules/bootstrap/fonts/*.{ttf,woff,woff2}"
 ];
 
+// bundling client ui
 gulp.task('bundle', () => {
     const bundler = browserify("./src/client/app.js", { debug: true }).transform(babel);
         return bundler.bundle()

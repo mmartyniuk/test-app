@@ -10,17 +10,19 @@ class Server {
         this.routes();
     }
     
+    // static folders
     config() {
         this.express.use('/build', express.static(path.join(__dirname, './../../build/')));
         this.express.use('/node_modules', express.static(path.join(__dirname, './../../node_modules/')));
     }
     
+    // calls to 3rd party backend API
     getAirports(query, resolve) {
         request({url: 'http://node.locomote.com/code-task/airports', qs: query}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 resolve(JSON.parse(body));
             }
-        })
+        });
     }
     
     getAirlines(resolve) {
@@ -28,7 +30,7 @@ class Server {
             if (!error && response.statusCode == 200) {
                resolve(JSON.parse(body));
             }
-        })
+        });
     }
     
     search(query, code, resolve) {
@@ -36,9 +38,9 @@ class Server {
             if (!error && response.statusCode == 200) {
                 resolve(JSON.parse(body));
             }
-        })
+        });
     }
-    
+
     routes() {
         let router = express.Router();
         router.get('/', (req, res, next) => {
@@ -63,16 +65,18 @@ class Server {
                     return {
                         value: airport.cityName + ", " + airport.airportName,
                         data: airport.airportCode
-                    }
+                    };
                 }));
             });
         });
         router.get('/search', (req, res, next) => {
             let self = this;
+            // getting airlines 
             let promise = new Promise(function(resolve, reject) {
                 return self.getAirlines(resolve);
             });
             let results = [];
+            // when we have airlines, getting result by search query
             return promise.then(function(result) {
                 let airlinesList = result;
                 let promises = airlinesList.map((list) => {
@@ -80,10 +84,11 @@ class Server {
                         self.search(req.query, list.code, resolve);
                     });
                 });
+                // when all 'airline' results are here, concatting an array with results
                 return Promise.all(promises).then((promiseResults) => {
                     promiseResults.forEach((searchResult) => {
                         results = results.concat(searchResult);
-                    })
+                    });
                     return res.json(results);
                 });
             });

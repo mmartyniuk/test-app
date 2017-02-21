@@ -1,6 +1,6 @@
 import * as $ from "jquery";
 import moment from "moment";
-
+// service to handle api calls to local backend API
 export default {
     getAirports: (query) => {
         return $.ajax({
@@ -8,7 +8,7 @@ export default {
             data: {
                 q: query
             }
-        })
+        });
     },
     search: (from, to, date) => {
         return $.ajax({
@@ -18,6 +18,6 @@ export default {
                 from: from,
                 to: to
             }
-        })
+        });
     }
 }

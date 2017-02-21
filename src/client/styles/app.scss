@@ -1,7 +1,21 @@
-.date.input-group input[readonly]
-{
+// app
+.search-form {
+    margin-top: 60px;
+    margin-bottom: 30px;
+    .search-form-elements {
+        margin-bottom: 20px;
+        .input-group.date input[readonly] {
+            background-color: #fff;
+        }
+    }    
+}
+.search-form-elements[disabled] .form-group input.form-control {
     background-color: #fff;
 }
+.btn-lg.btn-primary {
+    padding: 9px 70px;
+}
+// app end
 
 // autocomplete
 .autocomplete-suggestions {
@@ -19,7 +33,7 @@
 }
 .autocomplete-suggestions strong {
     font-weight: bold; 
-    color: #3399FF; 
+    color: #337ab7; 
 }
 .autocomplete-group {
     padding: 2px 5px;
