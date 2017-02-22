@@ -2,6 +2,9 @@ import express from "express";
 import * as path from "path";
 import request from "request";
 import Promise from "promise";
+import moment from "moment";
+
+import helpers from "./helpers/helper";
 
 class Server {
     constructor() {
@@ -36,7 +39,22 @@ class Server {
     search(query, code, resolve) {
         return request({url: "http://node.locomote.com/code-task/flight_search/" + code, qs: query}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                resolve(JSON.parse(body));
+                let result = JSON.parse(body).map((item) => {
+                    return {
+                        flightNumber: item.flightNum,
+                        from: item.start.airportName,
+                        to: item.finish.airportName,
+                        startTime: moment.utc(helpers.getUtcTime(item.start.dateTime)).format("llll"),
+                        // usually user is looking for tickets from "start" location
+                        // so it"s enough just to take duration of flight and add it to start time
+                        // to show arrival datetime
+                        finishTime: moment.utc(helpers.getUtcTime(item.start.dateTime)).add(item.durationMin, "m").format("llll"),
+                        airline: item.airline.name,
+                        plane: item.plane.shortName,
+                        price: item.price + "$"
+                    }
+                })
+                resolve(result);
             }
         });
     }
@@ -86,7 +104,7 @@ class Server {
                 });
                 // when all "airline" results are here, concatting an array with results
                 return Promise.all(promises).then((promiseResults) => {
-                    promiseResults.forEach((searchResult) => {
+                    promiseResults.map((searchResult) => {
                         results = results.concat(searchResult);
                     });
                     return res.json(results);

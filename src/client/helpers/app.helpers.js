@@ -94,27 +94,9 @@ export default {
         // appending tbody content
         for(let i= 0, len = sortedContent.length; i < len; i++) {
             let row = $("<tr></tr>");
-            let startTime = sortedContent[i].start.dateTime;
-            // required for ignoring local time
-            let startTimeMoment = moment(startTime, "YYYY/MM/DD HH:mm");
-            let startTimeUTC = [
-                startTimeMoment.format("YYYY"),
-                startTimeMoment.format("M")-1,
-                startTimeMoment.format("D"),
-                startTimeMoment.format("HH"),
-                startTimeMoment.format("mm")
-            ];
-            row.append($("<td></td>").text(sortedContent[i].flightNum));
-            row.append($("<td></td>").text(sortedContent[i].start.airportName));
-            row.append($("<td></td>").text(sortedContent[i].finish.airportName));
-            row.append($("<td></td>").text(moment.utc(startTimeUTC).format("llll")));
-            // usually user is looking for tickets from "start" location
-            // so it"s enough just to take duration of flight and add it to start time
-            // to show arrival datetime
-            row.append($("<td></td>").text(moment.utc(startTimeUTC).add(content[i].durationMin, "m").format("llll")));
-            row.append($("<td></td>").text(sortedContent[i].airline.name));
-            row.append($("<td></td>").text(sortedContent[i].plane.shortName));
-            row.append($("<td></td>").text(sortedContent[i].price + "$"));
+            for (let prop in sortedContent[i]) {
+                row.append($("<td></td>").text(sortedContent[i][prop]));
+            }
             tableBody.append(row);
         }
         table.append(tableBody);
